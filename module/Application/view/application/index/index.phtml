@@ -1,0 +1,48 @@
+<?php
+use Application\Form\DeleteForm;
+$form = $this->form;
+$form->prepare();
+?>
+<div class="container gallery-container">
+    <h1>Gallery</h1>
+    <p class="page-description text-center">
+    <div class="row">
+        <div class="center">
+            <?= $this->form()->openTag($form); ?>
+            <div class="form-group">
+                <?= $this->formLabel($form->get('file')); ?>
+                <?= $this->formElement($form->get('file')); ?>
+                <?= $this->formElementErrors($form->get('file')); ?>
+            </div>
+            <div class="center">
+                <?= $this->formElement($form->get('submit')); ?>
+            </div>
+            <?= $this->form()->closeTag(); ?>
+        </div>
+    </div>
+    </p>
+    <div class="tz-gallery">
+        <div class="row">
+            <?php if (count($files) == 0) : ?>
+                <p>
+                    <i>There are no files to display.</i>
+                </p>
+            <?php else : ?>
+                <?php foreach ($files as $file) : ?>
+                    <div class="col-sm-12 col-md-4">
+                        <a class="lightbox" href="<?= $this->url('application',['action' => 'file'],['query' => ['name' => $file]]); ?>">
+                            <img style="object-fit: cover; height:200px" src="<?= $this->url('application',['action' => 'file'],['query' => ['name' => $file]]); ?>" alt="image">
+                        </a>
+                        <?
+                        $deleteForm = new DeleteForm($file);
+                        ?>
+                        <?= $this->form()->openTag($deleteForm); ?>
+                        <?= $this->formElement($deleteForm->get('file')); ?>
+                        <?= $this->formElement($deleteForm->get('submit')); ?>
+                        <?= $this->form()->closeTag(); ?>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
